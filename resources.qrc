@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="add">resources/addIcon.png</file>
+        <file alias="delete">resources/delete.png</file>
+        <file alias="loop">resources/Loop.png</file>
+        <file alias="pause">resources/Pause.png</file>
+        <file alias="play">resources/Play.png</file>
+        <file alias="previous">resources/Previous.png</file>
+    </qresource>
+    <qresource prefix="/sounds">
+        <file alias="bip1">resources/bip1.wav</file>
+    </qresource>
+</RCC>

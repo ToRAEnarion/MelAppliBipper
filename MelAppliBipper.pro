@@ -25,11 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        bipperitem.cpp \
+        bippermanager.cpp \
         main.cpp \
         mainwindow.cpp \
-        mapplidisplay.cpp
+        mapplidisplay.cpp \
+        struct.cpp
 
 HEADERS += \
+        bipperitem.h \
+        bippermanager.h \
         mainwindow.h \
         mapplidisplay.h \
         struct.h

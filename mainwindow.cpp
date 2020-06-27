@@ -7,10 +7,6 @@
 #include <QDebug>
 
 
-QList<QColor> Constants::Colors = QList<QColor>() ;
-QList<QString> Constants::Sounds = QList<QString>();
-
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -22,13 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(Timer, &QTimer::timeout, this, &MainWindow::onTick);
     setIsPlaying(false);
 
-    Constants::Colors.append(QColor::fromRgb(255,175,175));
-    Constants::Colors.append(QColor::fromRgb(175,255,175));
-    Constants::Colors.append(QColor::fromRgb(175,175,255));
-    Constants::Colors.append(QColor::fromRgb(255,150,255));
-    Constants::Colors.append(QColor::fromRgb(150,255,255));
-
-    Constants::Sounds.append(":/sounds/bip1");
+    Constants::init();
 
     Model = new QStandardItemModel(0,3,this);
     connect(Model, SIGNAL(itemChanged(QStandardItem *)), this, SLOT(onDataChanged()));
@@ -147,6 +137,7 @@ void MainWindow::on_previousButton_pressed()
     setIsPlaying(!IsPlaying);
     ui->display->repaint();
 }
+
 
 void MainWindow::onTick()
 {

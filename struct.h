@@ -10,6 +10,25 @@ struct Constants
 {
     static QList<QColor> Colors;
     static QList<QString> Sounds;
+
+    static void init()
+    {
+        if(!IsInit)
+        {
+            IsInit = true;
+
+            Constants::Colors.append(QColor::fromRgb(255,175,175));
+            Constants::Colors.append(QColor::fromRgb(175,255,175));
+            Constants::Colors.append(QColor::fromRgb(175,175,255));
+            Constants::Colors.append(QColor::fromRgb(255,150,255));
+            Constants::Colors.append(QColor::fromRgb(150,255,255));
+
+            Constants::Sounds.append(":/sounds/bip1");
+        }
+    }
+
+private:
+    static bool IsInit;
 };
 
 struct Item

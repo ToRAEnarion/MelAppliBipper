@@ -1,17 +1,30 @@
 #include "bippermanager.h"
-
+#include <QDebug>
 
 BipperManager::BipperManager(QObject *parent) : QObject(parent),
     CurrentSound(nullptr),
     CurrentTime(0),
+    IsPlaying(false),
     MaxTime(0)
 {
     Constants::init();
+    Timer = new QTimer(this);
+    connect(Timer, &QTimer::timeout, this, &BipperManager::onTick);
+}
+
+int BipperManager::itemsCount() const
+{
+    return Items.size();
 }
 
 QList<BipperItem *> BipperManager::getItems() const
 {
     return Items;
+}
+
+BipperItem *BipperManager::item(int i)
+{
+    return Items[i];
 }
 
 int BipperManager::currentTime() const
@@ -48,6 +61,7 @@ void BipperManager::setIsPlaying(bool b)
     if(IsPlaying == b)
         return;
     IsPlaying = b;
+
     if(b)
     {
         Timer->start(1000);
@@ -83,17 +97,36 @@ void BipperManager::onResetTriggered()
     emit currentTimeChanged();
 }
 
+void BipperManager::switchIsPlaying()
+{
+    setIsPlaying(!IsPlaying);
+}
+
 
 void BipperManager::onTick()
 {
     CurrentTime++;
+
+    if(MaxTime>0 && CurrentTime >= MaxTime)
+    {
+        playSound(0);
+        onResetTriggered();
+    }
+
+    int workingTime = CurrentTime;
+    if(MaxTime>0)
+    {
+        int seq = getSequenceTotalTime();
+        workingTime = CurrentTime % seq;
+    }
+
     int offset = 0;
     for(int i=0;i<Items.size();i++)
     {
         int s = Items[i]->seconds();
         int t = s + offset;
-        if(((CurrentTime-offset) % s) == 0 &&
-                ((CurrentTime-offset) /s) <= Items[i]->occurences())
+        if(((workingTime - offset) % s) == 0 &&
+                ((workingTime - offset) /s) <= Items[i]->occurences())
         {
             playSound(0);
         }
@@ -115,6 +148,16 @@ void BipperManager::setMaxTime(int value)
         MaxTime = value;
         maxTimeChanged();
     }
+}
+
+int BipperManager::getSequenceTotalTime() const
+{
+    int t = 0;
+    for (int i=0;i<Items.size();i++)
+    {
+        t += Items[i]->seconds() * Items[i]->occurences();
+    }
+    return t;
 }
 
 void BipperManager::playSound(int i)

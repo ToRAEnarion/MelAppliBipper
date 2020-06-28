@@ -35,7 +35,7 @@
        <bool>false</bool>
       </attribute>
       <attribute name="verticalHeaderDefaultSectionSize">
-       <number>24</number>
+       <number>45</number>
       </attribute>
      </widget>
     </item>
@@ -102,7 +102,7 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>40</width>
+           <width>20</width>
            <height>20</height>
           </size>
          </property>
@@ -131,6 +131,18 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QSpinBox" name="timeMax">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
@@ -155,7 +167,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

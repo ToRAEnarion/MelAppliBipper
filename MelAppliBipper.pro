@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia
+QT       += core gui multimedia qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
         bipperitem.cpp \
         bippermanager.cpp \
+        bippermodel.cpp \
         main.cpp \
         mainwindow.cpp \
         mapplidisplay.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
 HEADERS += \
         bipperitem.h \
         bippermanager.h \
+        bippermodel.h \
         mainwindow.h \
         mapplidisplay.h \
         struct.h

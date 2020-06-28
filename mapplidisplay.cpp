@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QDebug>
 
-MAppliDisplay::MAppliDisplay(QWidget* parent) : QFrame (parent)
+MAppliDisplay::MAppliDisplay(QWidget* parent) : QFrame (parent), Values(nullptr), Seconds(nullptr)
 {
 
 }
@@ -27,6 +27,9 @@ void MAppliDisplay::update()
 
 void MAppliDisplay::paintEvent(QPaintEvent *e)
 {
+    if(Values == nullptr || Seconds == nullptr)
+        return;
+
     QPainter painter;
     painter.begin(this);
     painter.setRenderHint(QPainter::Antialiasing);

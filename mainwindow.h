@@ -4,8 +4,10 @@
 #include <QMainWindow>
 #include <QTime>
 #include <QStandardItemModel>
-#include <QSound>
 #include "struct.h"
+#include "bippermanager.h"
+#include "bippermodel.h"
+#include <QLabel>
 
 namespace Ui {
 class MainWindow;
@@ -22,8 +24,6 @@ public:
     void setIsPlaying(bool b);
 
     void updateTable();
-    void playSound(int i);
-
 private slots:
     void onDataChanged();
     void onAddTriggered();
@@ -31,19 +31,15 @@ private slots:
 
     void on_playButton_pressed();
     void on_previousButton_pressed();
+    void on_timeMax_valueChanged(int k);
 
-    void onTick();
-
+    void updateButtons();
+    void updateClock();
 private:
     Ui::MainWindow *ui;
-    QList<Item> Items;
-    QStandardItemModel *Model;
-    QSound* CurrentSound;
-
-    QTimer* Timer;
-    int Elapsed;
-
-    bool IsPlaying;
+    BipperManager* Manager;
+    BipperModel *Model;
+    QLabel* Clock;
 };
 
 #endif // MAINWINDOW_H

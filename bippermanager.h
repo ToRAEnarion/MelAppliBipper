@@ -11,12 +11,15 @@ class BipperManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int CurrentTime READ currentTime NOTIFY currentTimeChanged)
-    Q_PROPERTY(int IsPlaying READ isPlaying WRITE setIsPlaying NOTIFY currentTimeChanged)
+    Q_PROPERTY(int IsPlaying READ isPlaying WRITE setIsPlaying NOTIFY isPlayingChanged)
 
     Q_PROPERTY(int MaxTime READ maxTime WRITE setMaxTime NOTIFY maxTimeChanged)
 public:
-    BipperManager(QObject* parent);
+    BipperManager(QObject* parent = nullptr);
+
+    int itemsCount()const;
     QList<BipperItem*> getItems() const;
+    BipperItem* item(int i);
 
     int currentTime() const;
 
@@ -25,6 +28,8 @@ public:
 
     int maxTime() const;
     void setMaxTime(int value);
+
+    int getSequenceTotalTime() const;
 
 private:
     void playSound(int i);
@@ -35,6 +40,7 @@ public slots:
     void onDeleteTriggered();
 
     void onResetTriggered();
+    void switchIsPlaying();
 private slots:
     void onTick();
 signals:

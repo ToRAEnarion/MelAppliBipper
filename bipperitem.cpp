@@ -1,6 +1,6 @@
 #include "bipperitem.h"
 
-BipperItem::BipperItem(QObject *parent) : QObject(parent)
+BipperItem::BipperItem(QObject *parent) : QObject(parent), Seconds(60), Occurences(1)
 {
 
 }

@@ -9,5 +9,6 @@
     </qresource>
     <qresource prefix="/sounds">
         <file alias="bip1">resources/bip1.wav</file>
+        <file alias="chevre">resources/chevre.wav</file>
     </qresource>
 </RCC>

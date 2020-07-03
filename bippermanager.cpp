@@ -109,8 +109,9 @@ void BipperManager::onTick()
 
     if(MaxTime>0 && CurrentTime >= MaxTime)
     {
-        playSound(0);
+        playSound(-1);
         onResetTriggered();
+        return;
     }
 
     int workingTime = CurrentTime;
@@ -166,6 +167,14 @@ void BipperManager::playSound(int i)
     {
         CurrentSound->stop();
         CurrentSound->deleteLater();
+    }
+
+
+    if(i<0)
+    {
+        CurrentSound = new QSound(Constants::SoundEnd);
+        CurrentSound->play();
+        return;
     }
 
     CurrentSound = new QSound(Constants::Sounds[i%Constants::Sounds.size()]);

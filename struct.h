@@ -10,6 +10,7 @@ struct Constants
 {
     static QList<QColor> Colors;
     static QList<QString> Sounds;
+    static QString SoundEnd;
 
     static void init()
     {

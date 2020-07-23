@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>TimerModel.qml</file>
+        <file>TimerDialog.qml</file>
+    </qresource>
+</RCC>

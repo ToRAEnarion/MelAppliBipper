@@ -31,11 +31,9 @@ public:
 
     int getSequenceTotalTime() const;
 
-private:
-    void playSound(int i);
 public slots:
     void onDataChanged();
-
+    void playSound(int i);
     void onAddTriggered();
     void onDeleteTriggered();
 

@@ -24,7 +24,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
           qmltypes
-QML_IMPORT_NAME = io.qt.examples.backend
 QML_IMPORT_MAJOR_VERSION = 1
 
 SOURCES += \

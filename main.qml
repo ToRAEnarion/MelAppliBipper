@@ -4,12 +4,17 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import MelAppliBipper.CppTypes 0.1
 
 ApplicationWindow {
     id:window
-      visible: true
-          width: 640
-          height: 480
+    visible: true
+    width: 640
+    height: 480
+
+    BipperManager {
+        id: bipperManager
+    }
 
       GridLayout {
           anchors.fill: parent
@@ -86,22 +91,28 @@ ApplicationWindow {
               Layout.fillWidth: true
               Layout.columnSpan: 3
               Layout.row: 1
-              ColumnLayout{
+              RowLayout{
                   anchors.fill: parent
                   ListView {
                       id: timerListView
-                      Layout.rightMargin: 50
                       Layout.fillHeight: true
                       Layout.fillWidth: true
-                      model: TimerModel{}
+                      model: TimerModel{} // MODEL DOIT ETR CELUI DE BENJ
                   }
                   RoundButton {
                       id: addTimerButton
-                      text: "+"
-                      anchors.bottom: timerListView.bottom
-                      anchors.bottomMargin: 8
-                      anchors.horizontalCenter: parent.horizontalCenter
-                      onClicked: timerDialog.open()
+                      //text:"+"
+                      //icon.source: "resources.qrc:/icons/addIcon.png"
+                      //icon.name: "add"
+                      icon.height: height
+                      icon.width: width
+                      onClicked: {
+                          //bipperManager.switchIsPlaying()
+                          addTimerButton.text="add"
+                          //addTimerButton.text = bipperManager.IsPlaying ? "pause" : "play"
+                          //bipperManager.playSound(-1)
+                     }
+                     // onClicked: timerDialog.open()
                   }
               }
           }
@@ -120,7 +131,7 @@ ApplicationWindow {
              id: timerDialog
              x: Math.round((parent.width - width) / 2)
              y: Math.round((parent.height - height) / 2)
-             timerModel: timerListView.model
+             timerModel: timerListView.model // une fonction de bennj qui rempli la listview ? MODEL DOIT ETRE CELUI DE BENJ https://www.youtube.com/watch?v=9BcAYDlpuT8
          }
       }
 }

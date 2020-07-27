@@ -5,6 +5,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import MelAppliBipper.CppTypes 0.1
+import "formatNumber.js" as Logic
 
 ApplicationWindow {
     id:window
@@ -30,17 +31,23 @@ ApplicationWindow {
                 Layout.rowSpan: 1
 
                 GroupBox {
+                    id:cycleGroupBox
                     anchors.fill: parent
                     title: qsTr("Cycle")
                     checkable: true;
+                    enabled: checkBox.checked
                     RowLayout {
                         anchors.fill: parent
+                        enabled: cycleGroupBox.checked
                         Tumbler {
                             id: tumblerCycle
                             Layout.fillHeight: true
                             Layout.fillWidth: true
                             anchors.centerIn: parent
                             model: 100
+                            delegate: TumblerDelegate {
+                                text: Logic.formatNumber(modelData)
+                            }
                         }
                     }
                 }
@@ -57,28 +64,39 @@ ApplicationWindow {
                 Layout.column: 1
 
                 GroupBox {
+                    id:durationGroupBox
                     anchors.fill: parent
-                    title: qsTr("Cycle")
+                    title: qsTr("Durée")
                     checkable: true;
                     RowLayout {
+                        enabled: durationGroupBox.checked
                         anchors.fill: parent
                         Tumbler {
                             id: tumblerHour
                             Layout.fillHeight: true
                             Layout.fillWidth: true
                             model:24
+                            delegate: TumblerDelegate {
+                                text: Logic.formatNumber(modelData)
+                            }
                         }
                         Tumbler{
                             id: tumblerMinutes
                             Layout.fillHeight: true
                             Layout.fillWidth: true
                             model:60
+                            delegate: TumblerDelegate {
+                                text: Logic.formatNumber(modelData)
+                            }
                         }
                         Tumbler{
                             id: tumblerSecondes
                             Layout.fillHeight: true
                             Layout.fillWidth: true
                             model:60
+                            delegate: TumblerDelegate {
+                                text: Logic.formatNumber(modelData)
+                            }
                         }
                     }
                 }
@@ -101,18 +119,18 @@ ApplicationWindow {
                   }
                   RoundButton {
                       id: addTimerButton
-                      //text:"+"
+                      text:"+"
                       //icon.source: "resources.qrc:/icons/addIcon.png"
                       //icon.name: "add"
                       icon.height: height
                       icon.width: width
-                      onClicked: {
+                      onClicked: {                        
+                          onClicked: timerDialog.open()
                           //bipperManager.switchIsPlaying()
-                          addTimerButton.text="add"
+                          //addTimerButton.text="add"
                           //addTimerButton.text = bipperManager.IsPlaying ? "pause" : "play"
                           //bipperManager.playSound(-1)
                      }
-                     // onClicked: timerDialog.open()
                   }
               }
           }

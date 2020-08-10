@@ -5,6 +5,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import MelAppliBipper.CppTypes 0.1
+import Chronometer 1.0
 import "formatNumber.js" as Logic
 
 ApplicationWindow {
@@ -41,7 +42,6 @@ ApplicationWindow {
                     ExclusiveGroup { id: tabPositionGroup }
                     Rectangle {
                         color: "darkseagreen";  Layout.fillHeight: true; Layout.fillWidth: true
-
                         ColumnLayout {
                             anchors.fill: parent
                             RadioButton {
@@ -104,11 +104,7 @@ ApplicationWindow {
 
         Rectangle {
             id: view_C
-            color: "blueviolet"
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.columnSpan: 3
-            Layout.row: 1
+            color: "blueviolet"; Layout.fillHeight: true; Layout.fillWidth: true; Layout.columnSpan: 3; Layout.row: 1
             RowLayout{
                 anchors.fill: parent
                 ListView {
@@ -134,22 +130,89 @@ ApplicationWindow {
                 }
             }
         }
-        Rectangle {
-            id: view_D
-            color: "red"
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.columnSpan: 3
-            Layout.row: 2
-            Text { text: "view_D" ; anchors.centerIn: parent }
-        }
-
         TimerDialog {
             id: timerDialog
             x: Math.round((parent.width - width) / 2)
             y: Math.round((parent.height - height) / 2)
             timerModel: timerListView.model // une fonction de bennj qui rempli la listview ? MODEL DOIT ETRE CELUI DE BENJ https://www.youtube.com/watch?v=9BcAYDlpuT8
         }
+
+        Rectangle {
+            id: chronometerDisplay; Layout.fillHeight: true; Layout.fillWidth: true; Layout.columnSpan: 3; Layout.row: 2
+            //color: "red"
+            Chronometer {
+                id: chronometer
+                // Set its positioning and dimensions
+                anchors.centerIn: parent
+                width: 150
+                height: 150
+
+                // Determine the properties that Q_PROPERTY
+                name: "chronometer"
+                backgroundColor: "whiteSmoke"
+                borderActiveColor: "LightSlateGray"
+                borderNonActiveColor: "LightSteelBlue"
+
+                // Add the text that will be put up timer
+                Text {
+                    id: textTimer
+                    anchors.centerIn: parent
+                    font.bold: true
+                    font.pixelSize: 15
+                }
+
+                // If you change the time, put the time on the timer
+                onCircleTimeChanged: {
+                    textTimer.text = Qt.formatTime(circleTime, "mm:ss.zzz")
+                }
+            }
+            Button {
+                id: startstop_button
+                text: "Start"
+                checkable: true
+                onClicked: {
+                    bipperManager.switchIsPlaying()
+                    startstop_button.text = bipperManager.IsPlaying ? "Pause" : "Start"
+                    bipperManager.playSound(-1)
+                }
+            }
+            Button {
+                id: start
+                text: "Start"
+                onClicked: chronometer.start(); // Start timer
+                anchors {
+                    left: parent.left
+                    leftMargin: 20
+                    bottom: parent.bottom
+                    bottomMargin: 20
+                }
+            }
+
+            Button {
+                id: stop
+                text: "Stop"
+                onClicked:  chronometer.stop(); // Stop timer
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    bottom: parent.bottom
+                    bottomMargin: 20
+                }
+            }
+
+            Button {
+                id: clear
+                text: "Clear"
+                onClicked: chronometer.clear(); // clean timer
+                anchors {
+                    right: parent.right
+                    rightMargin: 20
+                    bottom: parent.bottom
+                    bottomMargin: 20
+                }
+            }
+        }
+
+
     }
 }
 

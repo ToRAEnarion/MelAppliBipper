@@ -6,7 +6,7 @@
 
 #include "bippermanager.h"
 #include "bipperitem.h"
-
+#include "chronometer.h"
 //int main(int argc, char *argv[])
 //{
 //    qmlRegisterType<BipperManager>("MelAppliBipper.CppTypes", 0, 1, "BipperManager" );
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     // BipperManager and BipperItem will be usable with: import MelAppliBipper.CppTypes 0.1
     qmlRegisterType<BipperManager>("MelAppliBipper.CppTypes", 0, 1, "BipperManager" );
     qmlRegisterType<BipperItem>("MelAppliBipper.CppTypes", 0, 1, "BipperItem" );
-
+    qmlRegisterType<Chronometer>("Chronometer",1,0,"Chronometer");
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);

@@ -24,13 +24,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
           qmltypes
-QML_IMPORT_NAME = io.qt.examples.backend
 QML_IMPORT_MAJOR_VERSION = 1
 
 SOURCES += \
         bipperitem.cpp \
         bippermanager.cpp \
         bippermodel.cpp \
+        chronometer.cpp \
         main.cpp \
         mainwindow.cpp \
         mapplidisplay.cpp \
@@ -40,6 +40,7 @@ HEADERS += \
         bipperitem.h \
         bippermanager.h \
         bippermodel.h \
+        chronometer.h \
         mainwindow.h \
         mapplidisplay.h \
         struct.h

@@ -3,5 +3,7 @@
         <file>main.qml</file>
         <file>TimerModel.qml</file>
         <file>TimerDialog.qml</file>
+        <file>TumblerDelegate.qml</file>
+        <file>formatNumber.js</file>
     </qresource>
 </RCC>

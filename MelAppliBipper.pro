@@ -30,6 +30,7 @@ SOURCES += \
         bipperitem.cpp \
         bippermanager.cpp \
         bippermodel.cpp \
+        chronometer.cpp \
         main.cpp \
         mainwindow.cpp \
         mapplidisplay.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
         bipperitem.h \
         bippermanager.h \
         bippermodel.h \
+        chronometer.h \
         mainwindow.h \
         mapplidisplay.h \
         struct.h

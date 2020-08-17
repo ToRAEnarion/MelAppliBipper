@@ -80,6 +80,7 @@ ApplicationWindow {
                                     Layout.fillWidth: true
                                     model:24
                                     delegate: TumblerDelegate {text: Logic.formatNumber(modelData)}
+                                    onCurrentIndexChanged: {bipperManager.MaxTime = tumblerHour.currentIndex*60*24 + tumblerMinutes.currentIndex*60 + tumblerSecondes.currentIndex}
                                 }
                                 Tumbler{
                                     id: tumblerMinutes
@@ -87,6 +88,8 @@ ApplicationWindow {
                                     Layout.fillWidth: true
                                     model:60
                                     delegate: TumblerDelegate {text: Logic.formatNumber(modelData)}
+                                    onCurrentIndexChanged: {bipperManager.MaxTime = tumblerHour.currentIndex*60*24 + tumblerMinutes.currentIndex*60 + tumblerSecondes.currentIndex}
+
                                 }
                                 Tumbler{
                                     id: tumblerSecondes
@@ -94,6 +97,8 @@ ApplicationWindow {
                                     Layout.fillWidth: true
                                     model:60
                                     delegate: TumblerDelegate {text: Logic.formatNumber(modelData)}
+                                    onCurrentIndexChanged: {bipperManager.MaxTime = tumblerHour.currentIndex*60*24 + tumblerMinutes.currentIndex*60 + tumblerSecondes.currentIndex}
+
                                 }
                             }
                         }
@@ -152,6 +157,9 @@ ApplicationWindow {
                 backgroundColor: "whiteSmoke"
                 borderActiveColor: "LightSlateGray"
                 borderNonActiveColor: "LightSteelBlue"
+                completeTime: bipperManager.CompleteCycleTime
+
+                currentTime: bipperManager.CurrentTime
 
                 // Add the text that will be put up timer
                 Text {
@@ -163,17 +171,15 @@ ApplicationWindow {
 
                 // If you change the time, put the time on the timer
                 onCircleTimeChanged: {
-                    textTimer.text = Qt.formatTime(circleTime, "mm:ss.zzz")
+                    textTimer.text = Qt.formatTime(circleTime, "mm:ss")
                 }
             }
             Button {
                 id: startstop_button
-                text: "Start"
-                checkable: true
+                checkable: false
+                text: bipperManager.IsPlaying ? "Pause" : "Start"
                 onClicked: {
                     bipperManager.switchIsPlaying()
-                    startstop_button.text = bipperManager.IsPlaying ? "Pause" : "Start"
-                    bipperManager.playSound(-1)
                 }
             }
             Button {
@@ -202,7 +208,7 @@ ApplicationWindow {
             Button {
                 id: clear
                 text: "Clear"
-                onClicked: chronometer.clear(); // clean timer
+                onClicked: bipperManager.onResetTriggered()
                 anchors {
                     right: parent.right
                     rightMargin: 20

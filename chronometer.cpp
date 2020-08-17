@@ -6,17 +6,20 @@ Chronometer::Chronometer(QQuickItem *parent) :
     m_borderActiveColor(Qt::blue),
     m_borderNonActiveColor(Qt::gray),
     m_angle(0),
-    m_circleTime(QTime(0,0,0,0))
+    m_circleTime(QTime(0,0,0,0)),
+    m_completeTime(60)
 {
     internalTimer = new QTimer(this);   // Initialize timer
     /* Also connected to the timer signal from the lambda function
      * Structure lambda functions [object] (arguments) {body}
      * */
+
     connect(internalTimer, &QTimer::timeout, [=](){
-        setAngle(angle() - 0.3);                    // rotation is determined in degrees.
-        setCircleTime(circleTime().addMSecs(50));   // Adding to the current time of 50 milliseconds
+        setAngle(angle() - 0.3);   // Adding to the current time of 50 milliseconds
         update();                                   // redraws the object
     });
+  //  internalTimer->start(50);
+
 }
 
 void Chronometer::paint(QPainter *painter)
@@ -148,4 +151,43 @@ void Chronometer::setCircleTime(const QTime circleTime)
 
     m_circleTime = circleTime;
     emit circleTimeChanged(circleTime);
+}
+
+int Chronometer::currentTime() const
+{
+    return m_currentTime;
+}
+
+void Chronometer::setCurrentTime(int currentTime)
+{
+    if (m_currentTime == currentTime)
+        return;
+
+    m_currentTime = currentTime;
+    emit currentTimeChanged(m_currentTime);
+    QTime nTime(0,0);
+    nTime = nTime.addSecs(currentTime);
+    setCircleTime(nTime);
+    setAngle(-360*currentTime/completeTime());
+    update();
+}
+
+void Chronometer::setCompleteTime(int completeTime)
+{
+
+    qDebug()<<"set cpl time "<<completeTime;
+    if(m_completeTime != completeTime)
+    {
+        m_completeTime = completeTime;
+
+
+        setAngle(-360*currentTime()/completeTime);
+        emit completeTimeChanged(completeTime);
+        update();
+    }
+}
+
+int Chronometer::completeTime() const
+{
+    return m_completeTime;
 }

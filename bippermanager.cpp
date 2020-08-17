@@ -10,6 +10,8 @@ BipperManager::BipperManager(QObject *parent) : QObject(parent),
     Constants::init();
     Timer = new QTimer(this);
     connect(Timer, &QTimer::timeout, this, &BipperManager::onTick);
+
+    onAddTriggered();
 }
 
 int BipperManager::itemsCount() const
@@ -146,8 +148,10 @@ void BipperManager::setMaxTime(int value)
 {
     if(MaxTime != value)
     {
+        qDebug()<<"set mx time "<<value;
         MaxTime = value;
-        maxTimeChanged();
+        emit maxTimeChanged();
+        emit completeCycleTimeChanged();
     }
 }
 
@@ -159,6 +163,13 @@ int BipperManager::getSequenceTotalTime() const
         t += Items[i]->seconds() * Items[i]->occurences();
     }
     return t;
+}
+
+int BipperManager::completeCycleTime() const
+{
+    if(MaxTime<1)
+        return 60;
+    return MaxTime;
 }
 
 void BipperManager::playSound(int i)

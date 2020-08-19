@@ -8,7 +8,7 @@ Dialog {
     id: timerDialog
     property TimerModel timerModel
 
-    title: "Add new timer"
+    title: "New Timer"
     modal: true
     standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
 
@@ -20,6 +20,7 @@ Dialog {
          anchors.fill: parent
          RowLayout {
              id: rowTumbler
+             anchors.centerIn: parent
              Tumbler {
                  id: hoursTumbler
                  model: 24

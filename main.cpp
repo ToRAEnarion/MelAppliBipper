@@ -7,6 +7,7 @@
 #include "bippermanager.h"
 #include "bipperitem.h"
 #include "chronometer.h"
+
 //int main(int argc, char *argv[])
 //{
 //    qmlRegisterType<BipperManager>("MelAppliBipper.CppTypes", 0, 1, "BipperManager" );
@@ -18,7 +19,6 @@
 
 //    return a.exec();
 //}
-
 
 int main(int argc, char *argv[])
 {
@@ -38,6 +38,5 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
-
     return app.exec();
 }

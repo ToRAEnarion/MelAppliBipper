@@ -1,19 +1,19 @@
 import QtQuick 2.12
-import QtQuick.Window 2.12
 import QtQuick 2.11
-import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.4
 import QtQuick.Controls 1.4
-import MelAppliBipper.CppTypes 0.1
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls.Material 2.12
+
 import Chronometer 1.0
-import "formatNumber.js" as Logic
+import MelAppliBipper.CppTypes 0.1
 
 ApplicationWindow {
     id:window
     visible: true
     width: 640
     height: 480
-
     BipperManager {
         id: bipperManager
     }
@@ -32,68 +32,66 @@ ApplicationWindow {
                 id:paramGroupBox
                 anchors.fill: parent
                 anchors.margins: 5
-                title: qsTr("Paramètres")
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
                 GridLayout{
                     columns: 2
-                    anchors.fill: parent
+                    anchors.fill: parent                    
                     ExclusiveGroup { id: tabPositionGroup }
                     Rectangle {
-                        color: "darkseagreen";  Layout.fillHeight: true; Layout.fillWidth: true
+                        border.color: Material.color(Material.Grey)
+                        radius: 9
+                        Layout.fillHeight: true; Layout.fillWidth: true
                         ColumnLayout {
                             anchors.fill: parent
                             RadioButton {
                                 id: cycleRadioButton
-                                text: "Cycle"
+                                Layout.margins: 5
                                 exclusiveGroup: tabPositionGroup
+                                text: "Cycle"
+                                style: MyRadioButtonStyle{}
                             }
-                            RowLayout {
-                                Tumbler {
-                                    id: tumblerCycle
-                                    enabled: cycleRadioButton.checked
-                                    Layout.fillHeight: true
-                                    Layout.fillWidth: true
-                                    anchors.centerIn: parent
-                                    model: 100
-                                    delegate: TumblerDelegate {text: Logic.formatNumber(modelData)}
-                                }
+                            MyTumblerStyle{
+                                id: tumblerCycle
+                                anchors.centerIn: parent
+                                model: 100
+                                enabled: cycleRadioButton.checked
                             }
                         }
                     }
 
                     Rectangle {
-                        color: "darkseagreen"; Layout.fillHeight: true; Layout.fillWidth: true ;  Layout.row: 0;Layout.column: 1
+                        border.color: Material.color(Material.Grey)
+                        radius: 9
+                        Layout.fillHeight: true; Layout.fillWidth: true ;  Layout.row: 0;Layout.column: 1
                         ColumnLayout {
                             anchors.fill: parent
                             RadioButton {
-                                id: durationRadioButton
-                                text:"Durée"
                                 exclusiveGroup: tabPositionGroup
+                                checked: true
+                                id: durationRadioButton
+                                Layout.margins: 5
+                                text:"Durée"
+                                style: MyRadioButtonStyle{}
                             }
                             RowLayout {
                                 enabled: durationRadioButton.checked
-                                Tumbler {
+                                anchors.centerIn: parent
+                                MyTumblerStyle{
                                     id: tumblerHour
-                                    Layout.fillHeight: true
-                                    Layout.fillWidth: true
                                     model:24
-                                    delegate: TumblerDelegate {text: Logic.formatNumber(modelData)}
+                                    onCurrentIndexChanged: {bipperManager.MaxTime = tumblerHour.currentIndex*60*24 + tumblerMinutes.currentIndex*60 + tumblerSecondes.currentIndex}
                                 }
-                                Tumbler{
+                                MyTumblerStyle{
                                     id: tumblerMinutes
-                                    Layout.fillHeight: true
-                                    Layout.fillWidth: true
                                     model:60
-                                    delegate: TumblerDelegate {text: Logic.formatNumber(modelData)}
+                                    onCurrentIndexChanged: {bipperManager.MaxTime = tumblerHour.currentIndex*60*24 + tumblerMinutes.currentIndex*60 + tumblerSecondes.currentIndex}
                                 }
-                                Tumbler{
+                                MyTumblerStyle{
                                     id: tumblerSecondes
-                                    Layout.fillHeight: true
-                                    Layout.fillWidth: true
                                     model:60
-                                    delegate: TumblerDelegate {text: Logic.formatNumber(modelData)}
+                                    onCurrentIndexChanged: {bipperManager.MaxTime = tumblerHour.currentIndex*60*24 + tumblerMinutes.currentIndex*60 + tumblerSecondes.currentIndex}
                                 }
                             }
                         }
@@ -115,11 +113,12 @@ ApplicationWindow {
                 }
                 RoundButton {
                     id: addTimerButton
-                    text:"+"
-                    //icon.source: "resources.qrc:/icons/addIcon.png"
-                    //icon.name: "add"
-                    icon.height: height
-                    icon.width: width
+                    text: "+"
+                    display: AbstractButton.TextBesideIcon
+                    //icon.source: "/icons/add"
+                    anchors.right: parent.right
+                    anchors.rightMargin: 5
+
                     onClicked: {
                         onClicked: timerDialog.open()
                         //bipperManager.switchIsPlaying()
@@ -139,7 +138,6 @@ ApplicationWindow {
 
         Rectangle {
             id: chronometerDisplay; Layout.fillHeight: true; Layout.fillWidth: true; Layout.columnSpan: 3; Layout.row: 2
-            //color: "red"
             Chronometer {
                 id: chronometer
                 // Set its positioning and dimensions
@@ -150,8 +148,10 @@ ApplicationWindow {
                 // Determine the properties that Q_PROPERTY
                 name: "chronometer"
                 backgroundColor: "whiteSmoke"
-                borderActiveColor: "LightSlateGray"
-                borderNonActiveColor: "LightSteelBlue"
+                borderActiveColor: Material.color(Material.DeepOrange)
+                borderNonActiveColor: Material.color(Material.Teal)
+                completeTime: bipperManager.CompleteCycleTime
+                currentTime: bipperManager.CurrentTime
 
                 // Add the text that will be put up timer
                 Text {
@@ -163,97 +163,32 @@ ApplicationWindow {
 
                 // If you change the time, put the time on the timer
                 onCircleTimeChanged: {
-                    textTimer.text = Qt.formatTime(circleTime, "mm:ss.zzz")
+                    textTimer.text = Qt.formatTime(circleTime, "mm:ss")
                 }
             }
-            Button {
+            RoundButton {
                 id: startstop_button
-                text: "Start"
-                checkable: true
+                anchors.left: parent.left
+                anchors.topMargin: 5
+                anchors.leftMargin: 5
+                text: bipperManager.IsPlaying ? "Pause" : "Start"
                 onClicked: {
                     bipperManager.switchIsPlaying()
-                    startstop_button.text = bipperManager.IsPlaying ? "Pause" : "Start"
-                    bipperManager.playSound(-1)
                 }
             }
-            Button {
-                id: start
-                text: "Start"
-                onClicked: chronometer.start(); // Start timer
-                anchors {
-                    left: parent.left
-                    leftMargin: 20
-                    bottom: parent.bottom
-                    bottomMargin: 20
-                }
-            }
-
-            Button {
-                id: stop
-                text: "Stop"
-                onClicked:  chronometer.stop(); // Stop timer
-                anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    bottom: parent.bottom
-                    bottomMargin: 20
-                }
-            }
-
-            Button {
+            RoundButton {
                 id: clear
                 text: "Clear"
-                onClicked: chronometer.clear(); // clean timer
-                anchors {
-                    right: parent.right
-                    rightMargin: 20
-                    bottom: parent.bottom
-                    bottomMargin: 20
-                }
+                onClicked: bipperManager.onResetTriggered()
+                anchors.right: parent.right
+                anchors.topMargin: 5
+                anchors.rightMargin: 5
             }
         }
-
-
     }
 }
 
 
-//    GridLayout {
-//        id:grid
-//        rows: 4
-//        columns: 3
-//        anchors.fill: parent
-
-//        Rectangle { // row 0- column 0 <-> column 4
-//            id:timer_grid
-//            color: "blue"
-//            Layout.fillHeight: true
-//            Layout.fillWidth: true
-//            Layout.row: 1
-//            Layout.column: 2
-//            Layout.margins: 10
-//        }
-
-//        Rectangle {
-//            color: "yellow"
-
-//            Layout.row: 2
-//            Layout.column: 2
-//        RowLayout {
-
-//            spacing: 5
-
-//        Button {
-//              id: playpause_button
-
-//              objectName: "button"
-//              text: qsTr("Button")
-//              checkable: true
-//              onClicked: {
-//                  bipperManager.switchIsPlaying()
-//                  playpause_button.text = bipperManager.IsPlaying ? "pause" : "play"
-//                  bipperManager.playSound(-1)
-//              }
-//          }
 //        Button {
 //              id: reset_buton
 

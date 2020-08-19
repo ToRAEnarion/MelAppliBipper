@@ -5,5 +5,8 @@
         <file>TimerDialog.qml</file>
         <file>TumblerDelegate.qml</file>
         <file>formatNumber.js</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>MyRadioButtonStyle.qml</file>
+        <file>MyTumblerStyle.qml</file>
     </qresource>
 </RCC>

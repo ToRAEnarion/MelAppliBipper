@@ -8,5 +8,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>MyRadioButtonStyle.qml</file>
         <file>MyTumblerStyle.qml</file>
+        <file>TimerDelegate.qml</file>
     </qresource>
 </RCC>

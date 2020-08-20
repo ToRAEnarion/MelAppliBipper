@@ -15,14 +15,14 @@ Tumbler {
           anchors.horizontalCenter: tumbler.horizontalCenter
           y: tumbler.height * 0.4
           width: tumbler.width*0.5
-          height: 1.5
+          height: 1
           color: Material.color(Material.DeepOrange)
       }
       Rectangle {
           anchors.horizontalCenter: tumbler.horizontalCenter
           y: tumbler.height * 0.6
           width: tumbler.width * 0.5
-          height: 1.5
+          height: 1
           color: Material.color(Material.DeepOrange)
       }
 }

@@ -52,12 +52,13 @@ ApplicationWindow {
                                 text: "Cycle"
                                 style: MyRadioButtonStyle{}
                             }
-                            MyTumblerStyle{
-                                id: tumblerCycle
-                                anchors.centerIn: parent
-                                model: 100
-                                enabled: cycleRadioButton.checked
-                            }
+                                MyTumblerStyle{
+                                    id: tumblerCycle
+                                    Layout.fillWidth: false
+                                    anchors.centerIn: parent
+                                    model: 100
+                                    enabled: cycleRadioButton.checked
+                                }
                         }
                     }
 
@@ -80,7 +81,7 @@ ApplicationWindow {
                                 anchors.centerIn: parent
                                 MyTumblerStyle{
                                     id: tumblerHour
-                                    model:24
+                                    model:24                                    
                                     onCurrentIndexChanged: {bipperManager.MaxTime = tumblerHour.currentIndex*60*24 + tumblerMinutes.currentIndex*60 + tumblerSecondes.currentIndex}
                                 }
                                 MyTumblerStyle{
@@ -102,23 +103,24 @@ ApplicationWindow {
 
         Rectangle {
             id: view_C
-            color: "blueviolet"; Layout.fillHeight: true; Layout.fillWidth: true; Layout.columnSpan: 3; Layout.row: 1
+            Layout.fillHeight: true; Layout.fillWidth: true; Layout.columnSpan: 3; Layout.row: 1
             RowLayout{
                 anchors.fill: parent
+                spacing: 5
+
                 ListView {
                     id: timerListView
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
+                    clip:true
+                    anchors.fill: parent
                     model: TimerModel{} // MODEL DOIT ETR CELUI DE BENJ
+                    delegate: TimerDelegate{}
                 }
                 RoundButton {
                     id: addTimerButton
                     text: "+"
-                    display: AbstractButton.TextBesideIcon
                     //icon.source: "/icons/add"
                     anchors.right: parent.right
                     anchors.rightMargin: 5
-
                     onClicked: {
                         onClicked: timerDialog.open()
                         //bipperManager.switchIsPlaying()
@@ -156,14 +158,14 @@ ApplicationWindow {
                 // Add the text that will be put up timer
                 Text {
                     id: textTimer
-                    anchors.centerIn: parent
+                    anchors.centerIn: chronometer
                     font.bold: true
                     font.pixelSize: 15
                 }
 
-                // If you change the time, put the time on the timer
+                // If you change the time, put the time on the timer ??
                 onCircleTimeChanged: {
-                    textTimer.text = Qt.formatTime(circleTime, "mm:ss")
+                    textTimer.text = Qt.formatTime(circleTime, "hh:mm:ss")
                 }
             }
             RoundButton {

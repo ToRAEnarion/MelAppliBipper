@@ -166,7 +166,7 @@ void Chronometer::setCurrentTime(int currentTime)
     m_currentTime = currentTime;
     emit currentTimeChanged(m_currentTime);
     QTime nTime(0,0);
-    nTime = nTime.addSecs(currentTime);
+    nTime = nTime.addSecs(completeTime() - currentTime);
     setCircleTime(nTime);
     setAngle(-360*currentTime/completeTime());
     update();
@@ -174,12 +174,13 @@ void Chronometer::setCurrentTime(int currentTime)
 
 void Chronometer::setCompleteTime(int completeTime)
 {
-
-    qDebug()<<"set cpl time "<<completeTime;
     if(m_completeTime != completeTime)
     {
         m_completeTime = completeTime;
 
+        QTime nTime(0,0);
+        nTime = nTime.addSecs(completeTime - currentTime());
+        setCircleTime(nTime);
 
         setAngle(-360*currentTime()/completeTime);
         emit completeTimeChanged(completeTime);
